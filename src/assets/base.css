@@ -1,0 +1,31 @@
+:root {
+  /* Colors */
+  --primary-color: #EB5440;
+  --primary-black: #000000;
+  --secondary-color: #4A4B4C;
+  --tertiary-light: #E8E8E8;
+  --tertiary-gray: #C3C3C3;
+  --background-1: #F6F6F6;
+  --background-2: #FFFFFF;
+  --hyperlink: #067BC2;
+
+  /* Typography */
+  --font-primary: 'Montserrat', sans-serif;
+  --font-secondary: 'Open Sans', sans-serif;
+  --font-size-h1-desktop: 32px;
+  --font-size-h1-mobile: 18px;
+  --font-size-h2-desktop: 22px;
+  --font-size-h2-mobile: 14px;
+  --font-size-body-desktop: 18px;
+  --font-size-body-mobile: 12px;
+  --font-size-button-desktop: 18px;
+  --font-size-button-mobile: 12px;
+  --font-size-input-title-desktop: 14px;
+  --font-size-input-title-mobile: 12px;
+  --font-size-error-desktop: 14px;
+  --font-size-error-mobile: 12px;
+  --font-size-listing-info-desktop: 16px;
+  --font-size-listing-info-mobile: 12px;
+  --font-size-empty-state-desktop: 18px;
+  --font-size-empty-state-mobile: 14px;
+}
