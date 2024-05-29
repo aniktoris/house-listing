@@ -58,6 +58,7 @@
       accept="image/png, image/jpeg"
       style="display: none"
       @change="handleImagePreview"
+      required
     />
     <img
       src="../assets/icons/ic_upload@3x.png"
@@ -164,6 +165,7 @@ import { useRouter } from 'vue-router';
 export default {
   setup() {
     const imagePreview = ref('');
+    const imageUpload = ref('');
 
     const formData = ref({
       price: 500000,
@@ -202,7 +204,7 @@ export default {
     };
 
     const handleSubmit = async () => {
-      const imageFile = imagePreview.value;
+      const imageFile = imageUpload.value.files[0];
       if (!imageFile) {
         const errorDiv = document.createElement('div');
         errorDiv.textContent = 'Please select an image.';
@@ -226,10 +228,14 @@ export default {
         if (!house.id) {
           throw new Error('House ID is missing from the API response');
         }
-        await houseStore.uploadImage(house.id, imageFile);
-        console.log('House created successfully:');
+
+        const imageForm = new FormData();
+        imageForm.append('image', imageFile);
+
+        await houseStore.uploadImage(house.id, imageForm);
+
         houseStore.houses.push(house);
-        router.push({ name: 'houseOverview', params: { id: house.id } });
+        router.push({ name: 'houseOverview', params: { houseId: house.id } });
       } catch (error) {
         console.error('Error creating house:', error);
       }
@@ -242,6 +248,7 @@ export default {
       clearImagePreview,
       handleSubmit,
       formData,
+      imageUpload,
     };
   },
 };

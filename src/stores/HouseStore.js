@@ -67,11 +67,14 @@ export const useHouseStore = defineStore('houseStore', {
 
     async uploadImage(id, image) {
       this.loading = true;
+
       try {
         const res = await fetch(
           `https://api.intern.d-tt.nl/api/houses/${id}/upload`,
           {
-            headers: { 'X-Api-Key': 'm1YE7rNAeqP0uTZfc5bhBO-wSL3RD69d' },
+            headers: {
+              'X-Api-Key': 'm1YE7rNAeqP0uTZfc5bhBO-wSL3RD69d',
+            },
             method: 'POST',
             body: image,
           },
@@ -81,37 +84,33 @@ export const useHouseStore = defineStore('houseStore', {
             `Error uploading image: ${res.status} ${res.statusText}`,
           );
         }
+
         const data = await res.json();
-        console.log(data);
         return data;
       } catch (error) {
         console.error('Failed to upload image:', error);
-        this.error = 'Failed to upload an image. Please try again later';
       } finally {
         this.loading = false;
       }
     },
     async createHouse(formData) {
       this.loading = true;
-      console.log(formData); // BEFORE: Proxy Object ---> [object Object] /// WE NEED A VALID FORM DATA OBJECT
 
       try {
         const res = await fetch('https://api.intern.d-tt.nl/api/houses', {
           headers: {
             'X-Api-Key': 'm1YE7rNAeqP0uTZfc5bhBO-wSL3RD69d',
-            // 'Content-Type': 'multipart/form-data', // NO NEED TO ADD HERE, AS ITS ALREADY ADDED
           },
           method: 'POST',
           body: formData,
         });
-        console.log(`This is res: ${res}`);
+
         if (!res.ok) {
           throw new Error(
             `Error creating a house listing: ${res.status} ${res.statusText}`,
           );
         }
         const data = await res.json();
-        console.log(`This is data: ${data}`);
         return data;
       } catch (error) {
         console.error('Failed to create a house listing:', error);
