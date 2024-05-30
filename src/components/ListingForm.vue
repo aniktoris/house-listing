@@ -51,34 +51,36 @@
     />
 
     <label for="city">Upload picture (PNG or JPG)*</label>
-    <input
-      id="image-upload"
-      ref="imageUpload"
-      type="file"
-      accept="image/png, image/jpeg"
-      style="display: none"
-      @change="handleImagePreview"
-      required
-    />
-    <img
-      src="../assets/icons/ic_upload@3x.png"
-      alt="upload plus"
-      @click="triggerFileInput"
-      id="upload-icon"
-    />
-    <img
-      :src="imagePreview"
-      alt="image preview"
-      v-if="imagePreview"
-      class="image-preview"
-    />
-    <img
-      src="../assets/icons/ic_clear_white@3x.png"
-      alt="clear icon white"
-      v-if="imagePreview"
-      class="clear-icon-white"
-      @click="clearImagePreview"
-    />
+    <div class="img-container">
+      <input
+        id="image-upload"
+        ref="imageUpload"
+        type="file"
+        accept="image/png, image/jpeg"
+        style="display: none"
+        @change="handleImagePreview"
+        required
+      />
+      <img
+        src="../assets/icons/ic_upload@3x.png"
+        alt="upload plus"
+        @click="triggerFileInput"
+        id="upload-icon"
+      />
+      <img
+        :src="imagePreview"
+        alt="image preview"
+        v-if="imagePreview"
+        class="image-preview"
+      />
+      <img
+        src="../assets/icons/ic_clear_white@3x.png"
+        alt="clear icon white"
+        v-if="imagePreview"
+        class="clear-icon-white"
+        @click="clearImagePreview"
+      />
+    </div>
 
     <label for="price">Price*</label>
     <input
@@ -159,7 +161,7 @@
 </template>
 
 <script>
-import { ref } from 'vue';
+import { reactive, ref } from 'vue';
 import { useHouseStore } from '@/stores/HouseStore';
 import { useRouter } from 'vue-router';
 export default {
@@ -201,6 +203,7 @@ export default {
 
     const clearImagePreview = () => {
       imagePreview.value = '';
+      imageUpload.value = '';
     };
 
     const handleSubmit = async () => {
@@ -314,6 +317,7 @@ img {
   padding: 3rem;
   border: 2px dashed lightgray;
   cursor: pointer;
+  position: absolute;
 }
 
 .btn-post {
@@ -357,14 +361,26 @@ button::before {
   border: none;
   border-radius: 0.5rem;
   position: absolute;
-  bottom: -8.5%;
 }
 
 .clear-icon-white {
   padding: 0;
   border: none;
   position: absolute;
-  bottom: 7%;
-  left: 17%;
+  left: 12%;
+}
+
+.img-container {
+  position: relative;
+  height: 8.7rem;
+}
+
+.error-message {
+  color: var(--primary-color);
+  font-style: italic;
+  font-size: 0.8rem;
+  margin: 0.2rem;
+  margin-top: -0.5rem;
+  margin-bottom: 0.7rem;
 }
 </style>

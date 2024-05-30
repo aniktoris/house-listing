@@ -3,7 +3,7 @@
     <img :src="house.image" alt="house photo" class="house-image" />
     <div class="house-details">
       <div class="edit-container">
-        <h2>{{ house.location.street }}</h2>
+        <h2>{{ house.location.street }} {{ house.location.houseNumber }}</h2>
         <div class="icons-wrapper">
           <img
             v-if="isCurrentUserListing && isMobile"
