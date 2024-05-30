@@ -6,7 +6,7 @@
         <h2>{{ house.location.street }} {{ house.location.houseNumber }}</h2>
         <div class="icons-wrapper">
           <img
-            v-if="house.madeByMe && isWhiteEdit"
+            v-if="house.madeByMe && isWhiteEdit && isMobile"
             class="edit-icon"
             :src="isWhiteEdit"
             alt="edit icon white"
@@ -18,7 +18,7 @@
             alt="edit icon"
           />
           <img
-            v-if="house.madeByMe && isWhiteDelete"
+            v-if="house.madeByMe && isWhiteDelete && isMobile"
             class="delete-icon"
             :src="isWhiteDelete"
             alt="delete icon white"
