@@ -279,4 +279,31 @@ nav a.router-link-exact-active {
     margin-right: 20rem;
   }  
 
+  .img-for-create {
+    height: 6%;
+    width: 6%;
+    margin-bottom: 1rem;
+  }
+
+  .edit-container h2{
+    margin-right: 2.5rem;
+  }
+
+  .house-button-wrapper h1{
+    margin-left: 9rem;
+    margin-right: 2rem;
+    font-size: var(--font-size-h1-mobile);
+    font-weight: bold;
+  }
+
+  .house-item .edit-icon{
+    width: 1rem;
+    height: 1rem;
+  }
+  
+  .house-item .delete-icon {
+    width: 1rem;
+    height: 1rem;
+  }
+  
 }

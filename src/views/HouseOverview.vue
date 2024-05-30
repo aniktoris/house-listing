@@ -10,6 +10,8 @@
         :iconGaragePath="iconGaragePath"
         :iconPricePath="iconPricePath"
         :iconBuildPath="iconBuildPath"
+        :isWhiteEdit="isWhiteEdit"
+        :isWhiteDelete="isWhiteDelete"
       />
 
       <p class="description">{{ house.description }}</p>
@@ -38,6 +40,8 @@ export default {
     const iconGaragePath = '../src/assets/icons/ic_garage@3x.png';
     const iconPricePath = '../src/assets/icons/ic_price@3x.png';
     const iconBuildPath = '../src/assets/icons/ic_construction_date@3x.png';
+    const isWhiteEdit = '../src/assets/icons/ic_edit_white@3x.png';
+    const isWhiteDelete = '../src/assets/icons/ic_delete_white@3x.png';
 
     onMounted(async () => {
       try {
@@ -56,6 +60,8 @@ export default {
       iconGaragePath,
       iconPricePath,
       iconBuildPath,
+      isWhiteEdit,
+      isWhiteDelete,
     };
   },
 };
@@ -192,20 +198,18 @@ export default {
     margin-left: -1rem;
   }
 
-  .house-overview :deep() .edit-icon {
-    height: 1rem;
-    width: auto;
+  .house-overview :deep() .edit-icon,
+  .house-overview :deep() .delete-icon {
+    position: fixed;
+    top: 1rem;
   }
 
   .house-overview :deep() .delete-icon {
-    height: 1rem;
-    width: auto;
+    right: 1rem;
   }
 
-  .house-overview :deep() .icons-wrapper {
-    margin-top: -33rem;
-    z-index: 1001;
-    position: absolute;
+  .house-overview :deep() .edit-icon {
+    right: 3rem;
   }
 
   .house-overview :deep() .house-item {

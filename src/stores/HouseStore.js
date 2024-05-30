@@ -6,7 +6,6 @@ export const useHouseStore = defineStore('houseStore', {
     loading: false,
     error: false,
     searchQuery: '',
-    currentUserListing: [3, 5],
     isMobile: window.innerWidth <= 375 && window.innerHeight <= 667,
   }),
   getters: {
@@ -23,9 +22,6 @@ export const useHouseStore = defineStore('houseStore', {
             .toLowerCase()
             .includes(this.searchQuery.toLowerCase()),
       );
-    },
-    isCurrentUserListing: (state) => (id) => {
-      return state.currentUserListing.includes(id);
     },
   },
   actions: {

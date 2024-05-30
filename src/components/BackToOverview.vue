@@ -73,6 +73,7 @@ img {
     margin-left: 0;
     padding-left: 2rem;
     padding-top: 2rem;
+    z-index: 1001;
   }
 }
 </style>

@@ -2,7 +2,12 @@
   <div class="houses-wrapper">
     <div class="house-button-wrapper">
       <h1>Houses</h1>
-      <button class="btn-create-new" @click="createNewListing">
+      <img
+        v-if="isMobile"
+        src="../assets/icons/ic_plus_grey@3x.png"
+        class="img-for-create"
+      />
+      <button v-else class="btn-create-new" @click="createNewListing">
         + CREATE NEW
       </button>
     </div>
@@ -58,7 +63,7 @@ export default {
   setup() {
     const houseStore = useHouseStore();
 
-    const { houses, loading, error, filteredHouses, searchQuery } =
+    const { houses, loading, error, filteredHouses, searchQuery, isMobile } =
       storeToRefs(houseStore);
 
     houseStore.getHouses();
@@ -112,6 +117,7 @@ export default {
       sortBy,
       sortType,
       createNewListing,
+      isMobile,
     };
   },
 };

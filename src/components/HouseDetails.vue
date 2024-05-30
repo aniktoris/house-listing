@@ -6,25 +6,25 @@
         <h2>{{ house.location.street }} {{ house.location.houseNumber }}</h2>
         <div class="icons-wrapper">
           <img
-            v-if="isCurrentUserListing && isMobile"
+            v-if="house.madeByMe && isWhiteEdit"
             class="edit-icon"
-            src="../assets/icons/ic_edit_white@3x.png"
+            :src="isWhiteEdit"
             alt="edit icon white"
           />
           <img
-            v-else-if="isCurrentUserListing"
+            v-else-if="house.madeByMe"
             class="edit-icon"
             src="../assets/icons/ic_edit@3x.png"
             alt="edit icon"
           />
           <img
-            v-if="isCurrentUserListing && isMobile"
+            v-if="house.madeByMe && isWhiteDelete"
             class="delete-icon"
-            src="../assets/icons/ic_delete_white@3x.png"
+            :src="isWhiteDelete"
             alt="delete icon white"
           />
           <img
-            v-else-if="isCurrentUserListing"
+            v-else-if="house.madeByMe"
             class="delete-icon"
             src="../assets/icons/ic_delete@3x.png"
             alt="delete icon"
@@ -72,7 +72,6 @@
 </template>
 
 <script>
-import { computed } from 'vue';
 import { useHouseStore } from '../stores/HouseStore';
 
 export default {
@@ -82,17 +81,13 @@ export default {
     'iconGaragePath',
     'iconPricePath',
     'iconBuildPath',
+    'isWhiteEdit',
+    'isWhiteDelete',
   ],
   setup(props) {
     const houseStore = useHouseStore();
 
     const isMobile = houseStore.isMobile;
-
-    const houseId = computed(() => props.house.id);
-
-    const isCurrentUserListing = computed(() =>
-      houseStore.isCurrentUserListing(houseId.value),
-    );
 
     const formatPrice = (price) => {
       return price.toLocaleString('nl-NL', {
@@ -101,7 +96,7 @@ export default {
       });
     };
 
-    return { formatPrice, isCurrentUserListing, isMobile };
+    return { formatPrice, isMobile };
   },
 };
 </script>

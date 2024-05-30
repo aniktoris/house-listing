@@ -170,18 +170,18 @@ export default {
     const imageUpload = ref('');
 
     const formData = ref({
-      price: 500000,
-      bedrooms: 3,
-      bathrooms: 2,
-      size: 120,
-      streetName: 'Stokvisstrat',
-      houseNumber: 132,
-      numberAddition: 'A',
-      zip: '1000AA',
-      city: 'Amsterdam',
-      constructionYear: '1901',
-      hasGarage: true,
-      description: 'Lorem ipsum',
+      price: '',
+      bedrooms: '',
+      bathrooms: '',
+      size: '',
+      streetName: '',
+      houseNumber: '',
+      numberAddition: '',
+      zip: '',
+      city: '',
+      constructionYear: '',
+      hasGarage: '',
+      description: '',
     });
 
     const router = useRouter();
