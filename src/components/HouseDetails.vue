@@ -10,12 +10,14 @@
             class="edit-icon"
             :src="isWhiteEdit"
             alt="edit icon white"
+            @click="editListing"
           />
           <img
             v-else-if="house.madeByMe"
             class="edit-icon"
             src="../assets/icons/ic_edit@3x.png"
             alt="edit icon"
+            @click="editListing"
           />
           <img
             v-if="house.madeByMe && isWhiteDelete && isMobile"
@@ -72,6 +74,7 @@
 </template>
 
 <script>
+import { useRouter } from 'vue-router';
 import { useHouseStore } from '../stores/HouseStore';
 
 export default {
@@ -85,6 +88,8 @@ export default {
     'isWhiteDelete',
   ],
   setup(props) {
+    const router = useRouter();
+
     const houseStore = useHouseStore();
 
     const isMobile = houseStore.isMobile;
@@ -96,7 +101,11 @@ export default {
       });
     };
 
-    return { formatPrice, isMobile };
+    const editListing = () => {
+      router.push({ name: 'editListing', props: { houseId: props.house.id } });
+    };
+
+    return { formatPrice, isMobile, editListing };
   },
 };
 </script>

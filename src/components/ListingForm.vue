@@ -59,7 +59,6 @@
         accept="image/png, image/jpeg"
         style="display: none"
         @change="handleImagePreview"
-        required
       />
       <img
         src="../assets/icons/ic_upload@3x.png"
@@ -81,6 +80,7 @@
         @click="clearImagePreview"
       />
     </div>
+    <div v-if="imageError" class="error-message">{{ imageError }}</div>
 
     <label for="price">Price*</label>
     <input
@@ -161,13 +161,20 @@
 </template>
 
 <script>
-import { reactive, ref } from 'vue';
+import { ref, watch } from 'vue';
 import { useHouseStore } from '@/stores/HouseStore';
 import { useRouter } from 'vue-router';
 export default {
-  setup() {
+  props: {
+    populatedFormData: {
+      type: Object,
+      default: () => ({}),
+    },
+  },
+  setup(props) {
     const imagePreview = ref('');
     const imageUpload = ref('');
+    const imageError = ref('');
 
     const formData = ref({
       price: '',
@@ -184,6 +191,33 @@ export default {
       description: '',
     });
 
+    watch(
+      // watch the populatedFormData prop for changes
+      () => props.populatedFormData,
+      // callback function to handle the changes
+      (newData) => {
+        if (newData && newData.length > 0) {
+          const firstItem = newData[0];
+          const { location, rooms, ...rest } = firstItem;
+          const {
+            street: streetName,
+            houseNumberAddition: numberAddition,
+            ...restLocation
+          } = location; // renaming street to streetName and houseNumberAddition to numberAddition
+          const populatedData = {
+            ...rest,
+            streetName,
+            numberAddition,
+            ...restLocation,
+            ...rooms,
+          };
+          formData.value = { ...populatedData };
+          imagePreview.value = firstItem.image;
+        }
+      },
+      { immediate: true },
+    );
+
     const router = useRouter();
 
     const triggerFileInput = () => {
@@ -199,6 +233,7 @@ export default {
         imagePreview.value = reader.result;
       };
       reader.readAsDataURL(file);
+      imageError.value = '';
     };
 
     const clearImagePreview = () => {
@@ -207,38 +242,57 @@ export default {
     };
 
     const handleSubmit = async () => {
-      const imageFile = imageUpload.value.files[0];
-      if (!imageFile) {
-        const errorDiv = document.createElement('div');
-        errorDiv.textContent = 'Please select an image.';
-        document.getElementById('upload-icon').appendChild(errorDiv);
-        return;
-      }
-
       try {
         const formValuesFromRef = formData.value;
 
-        const formDataToSubmit = new FormData(); // The object that we need to send using Fetch
+        const formDataToSubmit = new FormData(); // object that needs to be sent using Fetch
 
         for (const key in formValuesFromRef) {
-          // loop over all the formData values defined above e.g. price, description etc.
-          // append them inside the FormData object that we created
+          // looping over all the formData values defined above e.g. price, description etc.
+          // appending them inside the FormData object that was created
           formDataToSubmit.append(key, formValuesFromRef[key]);
         }
 
-        const house = await houseStore.createHouse(formDataToSubmit);
-        console.log('House API response:', house);
-        if (!house.id) {
-          throw new Error('House ID is missing from the API response');
+        // const imageForm = new FormData();
+        // imageForm.append('image', imageFile);
+
+        const houseId = formValuesFromRef.id;
+
+        if (houseId) {
+          await houseStore.editHouse(formDataToSubmit, houseId);
+          if (imageUpload.value.files.length > 0) {
+            const imageFile = imageUpload.value.files[0];
+            const imageForm = new FormData();
+            imageForm.append('image', imageFile);
+            await houseStore.uploadImage(houseId, imageForm);
+          } else if (!imagePreview.value) {
+            imageError.value = 'Please select an image';
+            return;
+          }
+          router.push({
+            name: 'houseOverview',
+            params: { houseId: houseId },
+          });
+        } else {
+          const house = await houseStore.createHouse(formDataToSubmit);
+
+          if (!house.id) {
+            throw new Error('House ID is missing from the API response');
+          }
+
+          if (imageUpload.value.files.length > 0) {
+            const imageFile = imageUpload.value.files[0];
+            const imageForm = new FormData();
+            imageForm.append('image', imageFile);
+            await houseStore.uploadImage(house.id, imageForm);
+          } else {
+            imageError.value = 'Please select an image';
+            return;
+          }
+
+          houseStore.houses.push(house);
+          router.push({ name: 'houseOverview', params: { houseId: house.id } });
         }
-
-        const imageForm = new FormData();
-        imageForm.append('image', imageFile);
-
-        await houseStore.uploadImage(house.id, imageForm);
-
-        houseStore.houses.push(house);
-        router.push({ name: 'houseOverview', params: { houseId: house.id } });
       } catch (error) {
         console.error('Error creating house:', error);
       }
@@ -252,6 +306,7 @@ export default {
       handleSubmit,
       formData,
       imageUpload,
+      imageError,
     };
   },
 };
