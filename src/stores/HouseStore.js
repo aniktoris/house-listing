@@ -138,7 +138,33 @@ export const useHouseStore = defineStore('houseStore', {
         return data;
       } catch (error) {
         console.error('Failed to edit a house listing:', error);
-        this.error = `Failed to edit a house listing. Please try again later. ${error.message}`;
+        this.error = 'Failed to edit a house listing. Please try again later.';
+      } finally {
+        this.loading = false;
+      }
+    },
+    async deleteHouse(id) {
+      this.loading = true;
+
+      this.houses = this.houses.filter((house) => house.id !== id);
+
+      try {
+        const res = await fetch(`https://api.intern.d-tt.nl/api/houses/${id}`, {
+          headers: {
+            'X-Api-Key': 'm1YE7rNAeqP0uTZfc5bhBO-wSL3RD69d',
+          },
+          method: 'DELETE',
+        });
+
+        if (!res.ok) {
+          throw new Error(
+            `Error deleting a house listing: ${res.status} ${res.statusText}`,
+          );
+        }
+      } catch (error) {
+        console.error('Failed to delete a house listing:', error);
+        this.error =
+          'Failed to delete a house listing. Please try again later.';
       } finally {
         this.loading = false;
       }

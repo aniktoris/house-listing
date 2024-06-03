@@ -13,11 +13,21 @@
         :isWhiteEdit="isWhiteEdit"
         :isWhiteDelete="isWhiteDelete"
         @editListing="editListing"
+        @showModalDelete="showModalDelete"
       />
 
       <p class="description">{{ house.description }}</p>
     </div>
   </div>
+  <teleport to=".modals">
+    <DeleteModal
+      v-if="isModalVisible"
+      :houseId="selectedHouseId"
+      :isModalVisible="isModalVisible"
+      @close="closeModal"
+      :goBack="goBack"
+    />
+  </teleport>
 </template>
 
 <script>
@@ -27,14 +37,18 @@ import { onMounted, ref } from 'vue';
 import { storeToRefs } from 'pinia';
 import BackToOverview from '@/components/BackToOverview.vue';
 import { useRouter } from 'vue-router';
+import DeleteModal from './DeleteModal.vue';
 
 export default {
-  components: { HouseDetails, BackToOverview },
+  components: { HouseDetails, BackToOverview, DeleteModal },
   props: ['houseId'],
   setup(props) {
     const houseStore = useHouseStore();
 
     let house = ref(null);
+    const isModalVisible = ref(false);
+    const selectedHouseId = ref(null);
+    const goBack = ref(true);
 
     const { loading, error } = storeToRefs(houseStore);
     const router = useRouter();
@@ -59,6 +73,15 @@ export default {
       router.push({ name: 'editListing', params: { houseId } });
     };
 
+    const showModalDelete = (houseId) => {
+      selectedHouseId.value = houseId;
+      isModalVisible.value = true;
+    };
+
+    const closeModal = () => {
+      isModalVisible.value = false;
+    };
+
     return {
       house,
       loading,
@@ -70,6 +93,11 @@ export default {
       isWhiteEdit,
       isWhiteDelete,
       editListing,
+      showModalDelete,
+      isModalVisible,
+      selectedHouseId,
+      closeModal,
+      goBack,
     };
   },
 };

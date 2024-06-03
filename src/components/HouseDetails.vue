@@ -24,12 +24,14 @@
             class="delete-icon"
             :src="isWhiteDelete"
             alt="delete icon white"
+            @click.prevent="emitModalDelete"
           />
           <img
             v-else-if="house.madeByMe"
             class="delete-icon"
             src="../assets/icons/ic_delete@3x.png"
             alt="delete icon"
+            @click.prevent="emitModalDelete"
           />
         </div>
       </div>
@@ -80,6 +82,7 @@ export default {
   props: [
     'house',
     'editListing',
+    'showModalDelete',
     'iconLocationPath',
     'iconGaragePath',
     'iconPricePath',
@@ -103,7 +106,11 @@ export default {
       emit('editListing', props.house.id);
     };
 
-    return { formatPrice, isMobile, emitEditListing };
+    const emitModalDelete = () => {
+      emit('showModalDelete', props.house.id);
+    };
+
+    return { formatPrice, isMobile, emitEditListing, emitModalDelete };
   },
 };
 </script>

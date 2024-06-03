@@ -26,7 +26,11 @@
           :to="{ name: 'houseOverview', params: { houseId: house.id } }"
           class="router-link-style"
         >
-          <HouseDetails :house="house" @editListing="editListing" />
+          <HouseDetails
+            :house="house"
+            @editListing="editListing"
+            @showModalDelete="showModalDelete"
+          />
         </router-link>
       </div>
     </div>
@@ -40,12 +44,25 @@
           :to="{ name: 'houseOverview', params: { houseId: house.id } }"
           class="router-link-style"
         >
-          <HouseDetails :house="house" @editListing="editListing" />
+          <HouseDetails
+            :house="house"
+            @editListing="editListing"
+            @showModalDelete="showModalDelete"
+          />
         </router-link>
       </div>
     </div>
 
     <NoResults v-if="totalSearchResults <= 0 && !loading" />
+
+    <teleport to=".modals">
+      <DeleteModal
+        v-if="isModalVisible"
+        :houseId="selectedHouseId"
+        :isModalVisible="isModalVisible"
+        @close="closeModal"
+      />
+    </teleport>
   </div>
 </template>
 
@@ -55,12 +72,13 @@ import { useHouseStore } from '../stores/HouseStore';
 import HouseDetails from '../components/HouseDetails.vue';
 import SearchInput from '../components/SearchInput.vue';
 import NoResults from '../components/NoResults.vue';
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
 import { computed } from 'vue';
 import { useRouter } from 'vue-router';
+import DeleteModal from './DeleteModal.vue';
 
 export default {
-  components: { HouseDetails, SearchInput, NoResults },
+  components: { HouseDetails, SearchInput, NoResults, DeleteModal },
   setup() {
     const houseStore = useHouseStore();
 
@@ -70,6 +88,8 @@ export default {
     houseStore.getHouses();
 
     const filter = ref('all');
+    const isModalVisible = ref(false);
+    const selectedHouseId = ref(null);
 
     const handleFilterUpdate = (filterType) => {
       filter.value = filterType;
@@ -109,6 +129,15 @@ export default {
       router.push({ name: 'editListing', params: { houseId } });
     };
 
+    const showModalDelete = (houseId) => {
+      selectedHouseId.value = houseId;
+      isModalVisible.value = true;
+    };
+
+    const closeModal = () => {
+      isModalVisible.value = false;
+    };
+
     return {
       houses,
       loading,
@@ -124,6 +153,10 @@ export default {
       createNewListing,
       isMobile,
       editListing,
+      showModalDelete,
+      isModalVisible,
+      selectedHouseId,
+      closeModal,
     };
   },
 };

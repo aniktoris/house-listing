@@ -4,6 +4,7 @@ import AboutView from '../views/AboutView.vue';
 import HouseOverview from '../views/HouseOverview.vue';
 import CreateListing from '../views/CreateListing.vue';
 import EditListing from '../views/EditListing.vue';
+import DeleteModal from '../views/DeleteModal.vue';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
