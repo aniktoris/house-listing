@@ -10,14 +10,14 @@
             class="edit-icon"
             :src="isWhiteEdit"
             alt="edit icon white"
-            @click="editListing"
+            @click.prevent="emitEditListing"
           />
           <img
             v-else-if="house.madeByMe"
             class="edit-icon"
             src="../assets/icons/ic_edit@3x.png"
             alt="edit icon"
-            @click="editListing"
+            @click.prevent="emitEditListing"
           />
           <img
             v-if="house.madeByMe && isWhiteDelete && isMobile"
@@ -74,12 +74,12 @@
 </template>
 
 <script>
-import { useRouter } from 'vue-router';
 import { useHouseStore } from '../stores/HouseStore';
 
 export default {
   props: [
     'house',
+    'editListing',
     'iconLocationPath',
     'iconGaragePath',
     'iconPricePath',
@@ -87,9 +87,7 @@ export default {
     'isWhiteEdit',
     'isWhiteDelete',
   ],
-  setup(props) {
-    const router = useRouter();
-
+  setup(props, { emit }) {
     const houseStore = useHouseStore();
 
     const isMobile = houseStore.isMobile;
@@ -101,11 +99,11 @@ export default {
       });
     };
 
-    const editListing = () => {
-      router.push({ name: 'editListing', props: { houseId: props.house.id } });
+    const emitEditListing = () => {
+      emit('editListing', props.house.id);
     };
 
-    return { formatPrice, isMobile, editListing };
+    return { formatPrice, isMobile, emitEditListing };
   },
 };
 </script>

@@ -156,7 +156,12 @@
       required
     />
 
-    <button class="btn-post" type="submit">POST</button>
+    <div class="loading" v-if="houseStore.loading">Loading...</div>
+    <div class="error" v-if="houseStore.error">{{ houseStore.error }}</div>
+
+    <button class="btn-post" type="submit">
+      {{ buttonName ? buttonName : 'POST' }}
+    </button>
   </form>
 </template>
 
@@ -169,6 +174,9 @@ export default {
     populatedFormData: {
       type: Object,
       default: () => ({}),
+    },
+    buttonName: {
+      type: String,
     },
   },
   setup(props) {
@@ -243,8 +251,8 @@ export default {
 
     const handleSubmit = async () => {
       try {
+        houseStore.loading = true;
         const formValuesFromRef = formData.value;
-
         const formDataToSubmit = new FormData(); // object that needs to be sent using Fetch
 
         for (const key in formValuesFromRef) {
@@ -252,9 +260,6 @@ export default {
           // appending them inside the FormData object that was created
           formDataToSubmit.append(key, formValuesFromRef[key]);
         }
-
-        // const imageForm = new FormData();
-        // imageForm.append('image', imageFile);
 
         const houseId = formValuesFromRef.id;
 
@@ -295,6 +300,9 @@ export default {
         }
       } catch (error) {
         console.error('Error creating house:', error);
+        houseStore.error = error.message || 'An error occurred';
+      } finally {
+        houseStore.loading = false;
       }
     };
 
@@ -307,6 +315,7 @@ export default {
       formData,
       imageUpload,
       imageError,
+      houseStore,
     };
   },
 };
@@ -422,7 +431,7 @@ button::before {
   padding: 0;
   border: none;
   position: absolute;
-  left: 12%;
+  left: 9%;
 }
 
 .img-container {
@@ -437,5 +446,74 @@ button::before {
   margin: 0.2rem;
   margin-top: -0.5rem;
   margin-bottom: 0.7rem;
+}
+
+.loading,
+.error {
+  font-style: italic;
+  font-weight: var(--font-size-error-desktop);
+  font-weight: 500;
+}
+
+@media (max-width: 376px) {
+  form {
+    flex-direction: column;
+    padding: 1rem;
+    margin-left: -7rem;
+  }
+
+  input,
+  select,
+  textarea {
+    width: 80%;
+    margin-bottom: 1rem;
+  }
+
+  .house-wrapper {
+    flex-direction: column;
+  }
+
+  .house-wrapper input,
+  .house-wrapper select {
+    width: 65%;
+  }
+
+  .btn-post {
+    width: 100%;
+    margin-left: 0;
+    font-size: var(--font-size-button-mobile);
+  }
+
+  .img-container {
+    width: 6rem;
+    height: auto;
+    padding-bottom: 6rem;
+  }
+
+  #upload-icon {
+    width: 0.7%;
+    height: auto;
+  }
+
+  .image-preview {
+    width: 8rem;
+    height: 6.3rem;
+  }
+
+  .clear-icon-white {
+    top: 0;
+    left: 7rem;
+    width: 1rem;
+    height: 1rem;
+  }
+
+  label {
+    margin-bottom: 0.5rem;
+  }
+
+  .error-message {
+    font-size: 0.9rem;
+    margin: 0.5rem 0;
+  }
 }
 </style>

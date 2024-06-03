@@ -6,6 +6,7 @@
         v-if="isMobile"
         src="../assets/icons/ic_plus_grey@3x.png"
         class="img-for-create"
+        @click="createNewListing"
       />
       <button v-else class="btn-create-new" @click="createNewListing">
         + CREATE NEW
@@ -25,7 +26,7 @@
           :to="{ name: 'houseOverview', params: { houseId: house.id } }"
           class="router-link-style"
         >
-          <HouseDetails :house="house" />
+          <HouseDetails :house="house" @editListing="editListing" />
         </router-link>
       </div>
     </div>
@@ -39,7 +40,7 @@
           :to="{ name: 'houseOverview', params: { houseId: house.id } }"
           class="router-link-style"
         >
-          <HouseDetails :house="house" />
+          <HouseDetails :house="house" @editListing="editListing" />
         </router-link>
       </div>
     </div>
@@ -104,6 +105,10 @@ export default {
       router.push({ name: 'createListing' });
     };
 
+    const editListing = (houseId) => {
+      router.push({ name: 'editListing', params: { houseId } });
+    };
+
     return {
       houses,
       loading,
@@ -118,6 +123,7 @@ export default {
       sortType,
       createNewListing,
       isMobile,
+      editListing,
     };
   },
 };

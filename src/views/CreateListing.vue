@@ -32,4 +32,11 @@ h2 {
 .listing-form-wrapper {
   margin-left: 8rem;
 }
+
+@media (max-width: 376px) {
+  h2 {
+    font-size: var(--font-size-h1-mobile);
+    padding-top: 1.7rem;
+  }
+}
 </style>

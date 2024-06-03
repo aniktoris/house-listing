@@ -3,7 +3,10 @@
     <BackToOverview />
     <div class="listing-form-wrapper">
       <h2>Edit listing</h2>
-      <ListingForm :populatedFormData="populatedFormData" />
+      <ListingForm
+        :populatedFormData="populatedFormData"
+        :buttonName="buttonName"
+      />
     </div>
   </div>
 </template>
@@ -21,13 +24,14 @@ export default {
     const populatedFormData = ref(null);
     const route = useRoute();
     const houseStore = useHouseStore();
+    const buttonName = 'SAVE';
 
     onMounted(async () => {
       const houseId = route.params.houseId;
       populatedFormData.value = await houseStore.getHouseById(houseId);
     });
 
-    return { populatedFormData };
+    return { populatedFormData, buttonName };
   },
 };
 </script>
@@ -46,5 +50,12 @@ h2 {
 
 .listing-form-wrapper {
   margin-left: 8rem;
+}
+
+@media (max-width: 376px) {
+  h2 {
+    font-size: var(--font-size-h1-mobile);
+    padding-top: 1.7rem;
+  }
 }
 </style>

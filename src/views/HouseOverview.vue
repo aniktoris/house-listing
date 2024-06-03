@@ -12,6 +12,7 @@
         :iconBuildPath="iconBuildPath"
         :isWhiteEdit="isWhiteEdit"
         :isWhiteDelete="isWhiteDelete"
+        @editListing="editListing"
       />
 
       <p class="description">{{ house.description }}</p>
@@ -25,6 +26,7 @@ import { useHouseStore } from '../stores/HouseStore';
 import { onMounted, ref } from 'vue';
 import { storeToRefs } from 'pinia';
 import BackToOverview from '@/components/BackToOverview.vue';
+import { useRouter } from 'vue-router';
 
 export default {
   components: { HouseDetails, BackToOverview },
@@ -35,6 +37,7 @@ export default {
     let house = ref(null);
 
     const { loading, error } = storeToRefs(houseStore);
+    const router = useRouter();
 
     const iconLocationPath = '../src/assets/icons/ic_location@3x.png';
     const iconGaragePath = '../src/assets/icons/ic_garage@3x.png';
@@ -52,6 +55,10 @@ export default {
       }
     });
 
+    const editListing = (houseId) => {
+      router.push({ name: 'editListing', params: { houseId } });
+    };
+
     return {
       house,
       loading,
@@ -62,6 +69,7 @@ export default {
       iconBuildPath,
       isWhiteEdit,
       isWhiteDelete,
+      editListing,
     };
   },
 };
@@ -144,6 +152,7 @@ export default {
 @media (max-width: 376px) {
   .house-overview {
     margin: 0;
+    overflow-x: hidden;
   }
 
   .house-details-container {
