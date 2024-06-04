@@ -87,4 +87,32 @@ export default {
 .btn-go-back {
   background: var(--secondary-color);
 }
+
+@media (max-width: 376px) {
+  .modal {
+    width: 17rem;
+    padding: 2rem;
+    margin: 50px auto;
+  }
+
+  .btn-delete,
+  .btn-go-back {
+    width: 15rem;
+    font-size: var(--font-size-button-mobile);
+  }
+
+  h2 {
+    font-size: var(--font-size-h1-mobile);
+    font-weight: bold;
+  }
+
+  p {
+    font-size: var(--font-size-body-mobile);
+    font-family: var(--font-secondary);
+  }
+
+  .btn-delete {
+    margin-top: 1rem;
+  }
+}
 </style>

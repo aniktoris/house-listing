@@ -52,7 +52,6 @@ export const useHouseStore = defineStore('houseStore', {
           throw new Error(`Error: ${res.status} ${res.statusText}`);
         }
         const data = await res.json();
-        console.log(data);
         return data;
       } catch (error) {
         this.error = 'Failed to load a house. Please try again later';
@@ -80,9 +79,6 @@ export const useHouseStore = defineStore('houseStore', {
             `Error uploading image: ${res.status} ${res.statusText}`,
           );
         }
-
-        const data = await res.text();
-        return data;
       } catch (error) {
         console.error('Failed to upload image:', error);
         this.error = 'Failed to upload image. Try again later';
@@ -107,7 +103,7 @@ export const useHouseStore = defineStore('houseStore', {
             `Error creating a house listing: ${res.status} ${res.statusText}`,
           );
         }
-        const data = await res.text();
+        const data = await res.json();
         return data;
       } catch (error) {
         console.error('Failed to create a house listing:', error);
@@ -134,8 +130,6 @@ export const useHouseStore = defineStore('houseStore', {
             `Error editing a house listing: ${res.status} ${res.statusText}`,
           );
         }
-        const data = await res.text();
-        return data;
       } catch (error) {
         console.error('Failed to edit a house listing:', error);
         this.error = 'Failed to edit a house listing. Please try again later.';
