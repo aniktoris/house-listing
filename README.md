@@ -1,6 +1,12 @@
-# dtt-houses
+# House Listing
 
-This template should help get you started developing with Vue 3 in Vite.
+![Screenshot](./src/assets/screenshot.png)
+
+Quick guide what has been built:
+- Implemented house search functionality by city, zip code, or street
+- Developed sorting functionality by price and size
+- Enabled users to create new house listings
+- Implemented features for listing owners to edit or delete their listings
 
 ## Recommended IDE Setup
 
