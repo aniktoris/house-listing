@@ -1,5 +1,8 @@
 import { defineStore } from 'pinia';
 
+const API_KEY = import.meta.env.VITE_API_KEY;
+const API_WEBSITE = import.meta.env.VITE_API;
+
 export const useHouseStore = defineStore('houseStore', {
   state: () => ({
     houses: [],
@@ -28,8 +31,8 @@ export const useHouseStore = defineStore('houseStore', {
     async getHouses() {
       this.loading = true;
       try {
-        const res = await fetch('https://api.intern.d-tt.nl/api/houses', {
-          headers: { 'X-Api-Key': 'm1YE7rNAeqP0uTZfc5bhBO-wSL3RD69d' },
+        const res = await fetch(`${API_WEBSITE}/api/houses`, {
+          headers: { 'X-Api-Key': API_KEY },
         });
         if (!res.ok) {
           throw new Error(`Error: ${res.status} ${res.statusText}`);
@@ -45,8 +48,8 @@ export const useHouseStore = defineStore('houseStore', {
     async getHouseById(id) {
       this.loading = true;
       try {
-        const res = await fetch(`https://api.intern.d-tt.nl/api/houses/${id}`, {
-          headers: { 'X-Api-Key': 'm1YE7rNAeqP0uTZfc5bhBO-wSL3RD69d' },
+        const res = await fetch(`${API_WEBSITE}/api/houses/${id}`, {
+          headers: { 'X-Api-Key': API_KEY },
         });
         if (!res.ok) {
           throw new Error(`Error: ${res.status} ${res.statusText}`);
@@ -64,16 +67,13 @@ export const useHouseStore = defineStore('houseStore', {
       this.loading = true;
 
       try {
-        const res = await fetch(
-          `https://api.intern.d-tt.nl/api/houses/${id}/upload`,
-          {
-            headers: {
-              'X-Api-Key': 'm1YE7rNAeqP0uTZfc5bhBO-wSL3RD69d',
-            },
-            method: 'POST',
-            body: image,
+        const res = await fetch(`${API_WEBSITE}/api/houses/${id}/upload`, {
+          headers: {
+            'X-Api-Key': API_KEY,
           },
-        );
+          method: 'POST',
+          body: image,
+        });
         if (!res.ok) {
           throw new Error(
             `Error uploading image: ${res.status} ${res.statusText}`,
@@ -90,9 +90,9 @@ export const useHouseStore = defineStore('houseStore', {
       this.loading = true;
 
       try {
-        const res = await fetch('https://api.intern.d-tt.nl/api/houses', {
+        const res = await fetch(`${API_WEBSITE}/api/houses`, {
           headers: {
-            'X-Api-Key': 'm1YE7rNAeqP0uTZfc5bhBO-wSL3RD69d',
+            'X-Api-Key': API_KEY,
           },
           method: 'POST',
           body: formData,
@@ -117,9 +117,9 @@ export const useHouseStore = defineStore('houseStore', {
       this.loading = true;
 
       try {
-        const res = await fetch(`https://api.intern.d-tt.nl/api/houses/${id}`, {
+        const res = await fetch(`${API_WEBSITE}/api/houses/${id}`, {
           headers: {
-            'X-Api-Key': 'm1YE7rNAeqP0uTZfc5bhBO-wSL3RD69d',
+            'X-Api-Key': API_KEY,
           },
           method: 'POST',
           body: formData,
@@ -143,9 +143,9 @@ export const useHouseStore = defineStore('houseStore', {
       this.houses = this.houses.filter((house) => house.id !== id);
 
       try {
-        const res = await fetch(`https://api.intern.d-tt.nl/api/houses/${id}`, {
+        const res = await fetch(`${API_WEBSITE}/api/houses/${id}`, {
           headers: {
-            'X-Api-Key': 'm1YE7rNAeqP0uTZfc5bhBO-wSL3RD69d',
+            'X-Api-Key': API_KEY,
           },
           method: 'DELETE',
         });
